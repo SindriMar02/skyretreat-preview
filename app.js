@@ -46,7 +46,8 @@
   if (host) {
     host.innerHTML = CABINS.map(function (c) {
       return '<a class="cabin" href="' + c.url + '" target="_blank" rel="noopener">' +
-        '<img src="assets/img/' + c.img + '-sm.webp" srcset="assets/img/' + c.img + '-sm.webp 1000w, assets/img/' + c.img + '-md.webp 2000w, assets/img/' + c.img + '.webp 3400w" sizes="(max-width: 860px) 760px, 1500px" alt="' + c.alt + '" loading="lazy">' +
+        '<picture><source media="(max-width: 860px)" srcset="assets/img/' + c.img + '-p.webp">' +
+        '<img src="assets/img/' + c.img + '-sm.webp" srcset="assets/img/' + c.img + '-sm.webp 1000w, assets/img/' + c.img + '-md.webp 1400w, assets/img/' + c.img + '-lg.webp 2000w, assets/img/' + c.img + '.webp 3400w" sizes="(max-width: 860px) 1036px, 1440px" alt="' + c.alt + '" loading="lazy"></picture>' +
         '<span class="cabin_type"><span class="cabin_name">' + c.name + '</span>' +
         '<span class="cabin_facts">' + c.facts + '</span>' +
         '<span class="cabin_more">View the cabin</span></span></a>';
