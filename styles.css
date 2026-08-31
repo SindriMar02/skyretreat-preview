@@ -68,8 +68,9 @@ html:not(.js) .rl > i, .rl.in > i { transform: translateY(0); }
 .rl.in > i { transition: transform .8s var(--expo); }
 
 /* ---------- nav ---------- */
-.nav { position: fixed; inset: 0 0 auto 0; z-index: 50; height: var(--nav-h); transition: height .6s cubic-bezier(.65,0,.35,1); }
-body.scrolled .nav { height: 4rem; }
+.nav { position: fixed; inset: 0 0 auto 0; z-index: 50; height: calc(var(--nav-h) + env(safe-area-inset-top));
+  padding-top: env(safe-area-inset-top); transition: height .6s cubic-bezier(.65,0,.35,1); }
+body.scrolled .nav { height: calc(4rem + env(safe-area-inset-top)); }
 body.scrolled .nav_in { color: #151A17; }
 .nav_bg { position: absolute; inset: 0; background: var(--day); border-bottom: 1px solid #CBD1C8; opacity: 0; transition: opacity .6s cubic-bezier(.65,0,.35,1); }
 body.scrolled .nav_bg { opacity: 1; }
@@ -183,7 +184,7 @@ html:not(.js) .hero_wm i, .hero_wm.in i { transform: translateY(0); }
 .cabins_head { text-align: center; }
 .cabins_head .h2 { margin-inline: auto; }
 .cabin_list { margin-top: clamp(2.5rem, 6vw, 4rem); display: grid; }
-.cabin { position: relative; display: block; height: clamp(26rem, 82vh, 46rem); overflow: clip; }
+.cabin { position: relative; display: block; height: clamp(26rem, 82svh, 46rem); overflow: clip; }
 .cabin img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
 .cabin::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13,20,32,.12) 0%, rgba(13,20,32,0) 38%, rgba(13,20,32,.6)); }
 .cabin_type { position: absolute; inset: auto 0 0 0; z-index: 1; padding: clamp(1.6rem, 4vw, 3rem); color: #F2F1EA; text-align: center; }
@@ -412,3 +413,23 @@ html.js .rev.in { opacity: 1; transform: none; transition: opacity .8s var(--eas
 }
 
 .a11y-name{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* ── touch targets: the 44pt floor on a coarse pointer. Measured at 440pt: burger
+   42x42, .spot hotspots 13x13, .foot_cta 35 tall, menu links 24 tall, .ulink 20.
+   Keyed to `pointer: coarse`, not width — an iPad is a touch screen, a small laptop
+   window is not. The hotspot grows its HIT AREA via a pseudo-element so the dot the
+   design draws stays exactly the size it was drawn. */
+@media (pointer: coarse) {
+  .nav_burger { width: 44px; height: 44px; }
+  .spot::after { content: ''; position: absolute; left: 50%; top: 50%; width: 44px; height: 44px;
+    transform: translate(-50%, -50%); border-radius: 50%; }
+  .ulink { padding-block: .8rem .6rem; margin-top: 1.2rem; }
+  .bk_navbtn { min-width: 44px; min-height: 44px; }
+  .foot_cta { padding-block: .9rem; }
+  .menu_links a { padding-block: clamp(1rem, 2.2vh, 1.4rem); }
+  .foot_nav a, .foot_reach a { display: inline-block; padding-block: .62rem; }
+  .foot_nav { gap: .1rem; }
+  .foot_reach { gap: .1rem; }
+  .ulink { padding-block: 1.1rem .9rem; }
+  .foot_credit { display: inline-block; padding-block: .72rem; }
+}
