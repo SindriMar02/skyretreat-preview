@@ -379,7 +379,6 @@
     gsap.timeline({
       scrollTrigger: { trigger: layers, start: 'top top', end: 'bottom top', scrub: SCRUB, invalidateOnRefresh: true }
     })
-      .to('[data-sr-layer="wm"]', { yPercent: 45, ease: 'none' }, 0)
       .to('[data-sr-layer="front"]', { yPercent: 8, ease: 'none' }, 0);
 
     /* the words track apart as you scroll, exactly like the footer wordmark */
@@ -392,6 +391,82 @@
         scrollTrigger: { trigger: layers, start: 'top top', end: 'bottom top', scrub: wmScrub } });
     }
   }
+  /* ---------- the wordmark docks into the header ----------
+     Two wordmarks on screen at once is the problem this solves: the hero mark travels
+     to the nav mark's exact centre and scale as you scroll the hero, and the two
+     cross-fade over the last stretch at matched geometry, so it reads as one mark
+     moving rather than one disappearing and another appearing.
+
+     Everything is measured at runtime — fonts and breakpoint change the geometry — and
+     re-measured on a WIDTH change only, because on iOS a height-only resize is just
+     the URL bar collapsing mid-scroll. */
+  (function dockWordmark() {
+    var navLogo = document.querySelector('.nav_logo');
+    var nav = document.getElementById('nav');
+    if (!heroWm || !navLogo || !nav || !layers) return;
+    var words = heroWm.querySelectorAll('.hero_wm_word');
+    if (!words.length) return;
+
+    var dx = 0, dy = 0, sc = 1, lastW = 0;
+
+    function measure() {
+      /* read the rest geometry with the dock transform cleared, or we would measure
+         our own previous transform and drift a little further every resize */
+      gsap.set(heroWm, { clearProps: 'x,y,scale,transformOrigin' });
+      var el = heroWm.getBoundingClientRect();
+      /* the wordmark's own ink, not its full-width box */
+      var l = Infinity, r = -Infinity, t = Infinity, bm = -Infinity;
+      words.forEach(function (w) {
+        var b = w.getBoundingClientRect();
+        l = Math.min(l, b.left); r = Math.max(r, b.right);
+        t = Math.min(t, b.top);  bm = Math.max(bm, b.bottom);
+      });
+      var markW = r - l, markCx = (l + r) / 2, markCy = (t + bm) / 2;
+      var hadScrolled = body.classList.contains('scrolled');
+      body.classList.add('scrolled');
+      var navPrevT = navLogo.style.transition, navBarPrevT = nav.style.transition;
+      navLogo.style.transition = 'none'; nav.style.transition = 'none';
+      navLogo.getBoundingClientRect();           /* flush */
+      var navBox = navLogo.getBoundingClientRect();
+      var navCx = navBox.left + navBox.width / 2, navCy = navBox.top + navBox.height / 2;
+      navLogo.style.transition = navPrevT; nav.style.transition = navBarPrevT;
+      if (!hadScrolled) body.classList.remove('scrolled');
+      var heroH = layers.getBoundingClientRect().height;
+
+      sc = markW > 0 ? navBox.width / markW : 1;
+      dx = navCx - markCx;
+      /* the hero scrolls away under a FIXED nav, so the travel has to add back the
+         distance the page itself moves over the trigger's range */
+      dy = navCy - markCy + heroH;
+      /* scale about the ink, not the full-width element box */
+      gsap.set(heroWm, {
+        transformOrigin: ((markCx - el.left) / el.width * 100) + '% ' +
+                         ((markCy - el.top) / el.height * 100) + '%'
+      });
+    }
+    measure();
+
+    var tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: layers, start: 'top top', end: 'bottom top',
+        scrub: SCRUB, invalidateOnRefresh: true
+      }
+    });
+    tl.fromTo(heroWm, { x: 0, y: 0, scale: 1 },
+      { x: function () { return dx; }, y: function () { return dy; },
+        scale: function () { return sc; }, ease: 'none' }, 0)
+      /* the handoff: matched position and size, so the swap is not visible */
+      .to(heroWm,   { autoAlpha: 0, ease: 'none', duration: 0.12 }, 0.88)
+      .fromTo(navLogo, { autoAlpha: 0 }, { autoAlpha: 1, ease: 'none', duration: 0.12 }, 0.88);
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth === lastW) return;
+      lastW = window.innerWidth;
+      measure();
+      ScrollTrigger.refresh();
+    });
+  })();
+
   /* it rises out of its mask on load, before anything else moves */
   if (heroWm) requestAnimationFrame(function () { heroWm.classList.add('in'); });
 
