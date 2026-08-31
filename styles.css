@@ -143,11 +143,11 @@ html:not(.js) .hero_wm i, .hero_wm.in i { transform: translateY(0); }
 .hero_wm.in .hero_wm_word:last-child i { transition-delay: .1s; }
 .hero_base {
   position: absolute; inset: auto 0 0 0; z-index: 2;
-  padding: 0 var(--pad) clamp(2rem, 5vh, 3.4rem);
+  padding: clamp(3rem, 9vh, 5.5rem) var(--pad) clamp(2rem, 5vh, 3.4rem);
   text-align: center; color: #EEF1F4;
-  background: linear-gradient(180deg, transparent, rgba(13,20,32,.62));
+  background: linear-gradient(180deg, transparent 0%, rgba(13,20,32,.46) 34%, rgba(13,20,32,.74) 100%);
 }
-.hero_eyebrow { font: 500 .6875rem/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; opacity: .82; margin-bottom: 1rem; }
+.hero_eyebrow { font: 500 .6875rem/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: #D6DEE6; margin-bottom: 1rem; }
 .hero_h1 { font: 400 clamp(1.5rem, 3.2vw, 2.5rem)/1.2 var(--disp); max-width: 20ch; margin: 0 auto 1.6rem; }
 .hero_cta { display: inline-block; }
 
@@ -365,7 +365,7 @@ html:not(.js) .hero_wm i, .hero_wm.in i { transform: translateY(0); }
 /* The hero carries its own "Book direct". While it is on screen the sticky bar is a
    SECOND identical green CTA 71px below the first — measured on device. `at-hero` is
    already on <body> in the markup; nothing was ever toggling it. */
-body.at-hero .mobilebar { opacity: 0; transform: translateY(140%); pointer-events: none; }
+body.at-hero .mobilebar { opacity: 0; transform: translateY(140%); pointer-events: none; visibility: hidden; }
 
 /* ---------- Motion's scroll word reveal (21st.dev 24525) ---------- */
 .sw { opacity: .55; transition: opacity .18s linear; }   /* unlit floor clears 4.5:1 on both grounds */
