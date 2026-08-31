@@ -130,8 +130,8 @@ body.menu-open .menu { opacity: 1; visibility: visible; }
 /* the hero wordmark reads like the footer one: two masked words justified across
    the full width, rising on load, tracking apart and sinking behind the cabin */
 .hero_wm {
-  position: absolute; left: 0; right: 0; top: 19%;
-  z-index: 1; will-change: transform;
+  position: fixed; left: 0; right: 0; top: 19%;
+  z-index: 51; pointer-events: none; will-change: transform;
   display: flex; justify-content: space-between; gap: .3em;
   padding-inline: var(--pad); padding-right: calc(var(--pad) + .06em);
 }

@@ -431,13 +431,12 @@
       var navCx = navBox.left + navBox.width / 2, navCy = navBox.top + navBox.height / 2;
       navLogo.style.transition = navPrevT; nav.style.transition = navBarPrevT;
       if (!hadScrolled) body.classList.remove('scrolled');
-      var heroH = layers.getBoundingClientRect().height;
 
       sc = markW > 0 ? navBox.width / markW : 1;
       dx = navCx - markCx;
-      /* the hero scrolls away under a FIXED nav, so the travel has to add back the
-         distance the page itself moves over the trigger's range */
-      dy = navCy - markCy + heroH;
+      /* the mark is position:fixed, so its viewport position does not move with the
+         page and the travel is simply where-it-is -> where-the-nav-mark-is */
+      dy = navCy - markCy;
       /* scale about the ink, not the full-width element box */
       gsap.set(heroWm, {
         transformOrigin: ((markCx - el.left) / el.width * 100) + '% ' +
