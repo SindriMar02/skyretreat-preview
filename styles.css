@@ -69,10 +69,12 @@ html:not(.js) .rl > i, .rl.in > i { transform: translateY(0); }
 .rl.in > i { transition: transform .8s var(--expo); }
 
 /* ---------- nav ---------- */
-.nav { position: fixed; inset: 0 0 auto 0; z-index: 50; height: calc(var(--nav-h) + env(safe-area-inset-top));
+.nav { position: fixed; inset: 0 0 auto 0; z-index: 58; height: calc(var(--nav-h) + env(safe-area-inset-top));
   padding-top: env(safe-area-inset-top); transition: height .6s cubic-bezier(.65,0,.35,1); }
 body.scrolled .nav { height: calc(4rem + env(safe-area-inset-top)); }
 body.scrolled .nav_in { color: #151A17; }
+body.menu-open .nav_in { color: #E8ECF2; }
+body.menu-open .nav_bg { opacity: 0; }
 .nav_bg { position: absolute; inset: 0; background: var(--day); border-bottom: 1px solid #CBD1C8; opacity: 0; transition: opacity .6s cubic-bezier(.65,0,.35,1); }
 body.scrolled .nav_bg { opacity: 1; }
 .nav_in { position: relative; height: 100%; display: flex; align-items: center; justify-content: space-between; padding-inline: var(--pad); }
@@ -101,17 +103,35 @@ body.menu-open .nav_burger span:last-child { transform: translateY(-.175rem) rot
 body.menu-open .nav_burger { background: var(--aurora); color: var(--on-aurora); }
 
 /* ---------- menu ---------- */
-.menu { position: fixed; inset: 0; z-index: 49; display: grid; grid-template-columns: 1fr 1fr; background: var(--day); color: #151A17; opacity: 0; visibility: hidden; transition: opacity .45s var(--ease), visibility .45s; }
+.menu { position: fixed; inset: 0; z-index: 56; display: grid; grid-template-columns: 1fr 1fr;
+  background: var(--night); color: #E8ECF2; opacity: 0; visibility: hidden;
+  transition: opacity .45s var(--ease), visibility .45s; }
+body.menu-open .mobilebar_wrap { visibility: hidden; }
 .menu[hidden] { display: grid; }
 body.menu-open .menu { opacity: 1; visibility: visible; }
 .menu_links { display: flex; flex-direction: column; justify-content: center; gap: 2.5rem; padding: var(--nav-h) var(--pad) var(--pad); }
 .menu_links ul { list-style: none; }
-.menu_links li { border-bottom: 1px solid #CBD1C8; }
-.menu_links li:first-child { border-top: 1px solid #CBD1C8; }
-.menu_links a { display: flex; align-items: baseline; gap: 1rem; padding: clamp(.85rem, 2.2vh, 1.4rem) 0; transition: opacity .3s; }
-.menu_links span { font: 400 clamp(1.3rem, 2.8vw, 2.1rem)/1.1 var(--disp); }
-.menu_links em { font: 400 .76rem/1 var(--sans); font-style: normal; letter-spacing: .05em; color: #5C665F; margin-left: auto; text-align: right; }
-.menu_foot { display: grid; gap: .4rem; font-size: .85rem; color: #5C665F; }
+.menu_links li { border-bottom: 1px solid var(--g-line); overflow: hidden; }
+.menu_links li:first-child { border-top: 1px solid var(--g-line); }
+.menu_links a { position: relative; display: flex; align-items: baseline; gap: 1rem;
+  padding: clamp(.85rem, 2.2vh, 1.4rem) 0; color: inherit;
+  transform: translateY(105%); transition: transform .8s var(--expo), color .3s; }
+/* each row rises out of its own rule as the panel opens, stagger set inline */
+body.menu-open .menu_links a { transform: none; }
+.menu_links span { font: 400 clamp(1.5rem, 3.2vw, 2.4rem)/1.1 var(--disp); }
+.menu_links em { font: 400 .76rem/1 var(--sans); font-style: normal; letter-spacing: .05em;
+  color: var(--g-soft); margin-left: auto; text-align: right; transition: color .3s; }
+/* the accent the rest of the build uses, on the row you are actually on */
+.menu_links a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: var(--aurora); transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform .5s var(--ease); }
+.menu_links a:active::after, .menu_links a:focus-visible::after { transform: scaleX(1); }
+@media (hover: hover) and (pointer: fine) {
+  .menu_links a:hover { color: var(--aurora); }
+  .menu_links a:hover em { color: var(--g-soft); }
+  .menu_links a:hover::after { transform: scaleX(1); }
+}
+.menu_foot { display: grid; gap: .4rem; font-size: .85rem; color: var(--g-soft); }
 .menu_visual { position: relative; overflow: clip; }
 .menu_img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .3s; }
 .menu_img.is-visible { opacity: 1; }
@@ -411,7 +431,15 @@ html.js .rev.in { opacity: 1; transform: none; transition: opacity .8s var(--eas
   .nav_book { display: none; }
   .mobilebar_wrap { display: block; }
   .menu { grid-template-columns: 1fr; }
-  .menu_visual { display: none; }
+  /* the panel's photography was switched off entirely on a phone, which is what left
+     a bare list of links. It returns as a band under them — no hover to drive a
+     crossfade on touch, so it holds one frame and reads as atmosphere, not a dead
+     control. */
+  .menu { grid-template-rows: 1fr auto; }
+  .menu_visual { display: block; position: relative; height: 26svh; min-height: 9rem; }
+  .menu_visual .menu_img:not(.is-visible) { display: none; }
+  .menu_visual::after { content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, var(--night) 0%, rgba(13,20,32,0) 46%); }
   .hero_wm { top: 15%; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0; text-align: center; padding-right: var(--pad); }
   .hero_base { padding-bottom: 5rem; }
   /* ── mobile rhythm ──────────────────────────────────────────────────────
