@@ -45,7 +45,7 @@ body {
   font: 400 1.0625rem/1.65 var(--sans);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
-  transition: background-color .9s var(--ease), color .3s var(--ease);
+  transition: background-color .3s var(--ease), color .12s linear;
 }
 body[data-ground="day"] { background-color: var(--day); }
 body.no-scroll { overflow: hidden; }
@@ -53,7 +53,7 @@ img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 .wrap { width: min(100% - 2 * var(--pad), 82rem); margin-inline: auto; }
-.tintplate { position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 60; pointer-events: none; background-color: var(--g-bg); transition: background-color .9s var(--ease); }
+.tintplate { position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 60; pointer-events: none; background-color: var(--g-bg); transition: background-color .3s var(--ease); }
 .tintplate--foot { inset: auto 0 0 0; }
 
 .eyebrow { font: 500 .6875rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--g-soft); margin-bottom: 1.1rem; }
@@ -377,7 +377,7 @@ html:not(.js) .hero_wm i, .hero_wm.in i { transform: translateY(0); }
   position: fixed; inset: auto 0 0 0; z-index: 55; display: none;
   padding: .6rem .6rem calc(.6rem + env(safe-area-inset-bottom));
   background-color: var(--g-bg);
-  transition: background-color .9s var(--ease), opacity .4s var(--ease), transform .4s var(--ease);
+  transition: background-color .3s var(--ease), opacity .4s var(--ease), transform .4s var(--ease);
 }
 .mobilebar {
   display: block; text-align: center; background: var(--aurora); color: var(--on-aurora);

@@ -12,7 +12,7 @@
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
   var hasGSAP = !!(window.gsap && window.ScrollTrigger);
-  var SCRUB = isTouch ? 0.35 : true;
+  var SCRUB = isTouch ? 0.15 : true;
   var meta = document.getElementById('themeColor');
 
   /* ---------- ground writer ---------- */
@@ -197,7 +197,7 @@
   /* ---------- ground flip ---------- */
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) { if (e.isIntersecting) setGround(e.target.dataset.ground || 'night'); });
-  }, { rootMargin: '-45% 0% -45% 0%' });
+  }, { rootMargin: '-12% 0% -62% 0%' });
   document.querySelectorAll('[data-ground]').forEach(function (s) {
     if (s !== body && s.dataset.ground) io.observe(s);
   });
