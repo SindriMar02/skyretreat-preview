@@ -138,7 +138,10 @@
     var rows = document.querySelectorAll(rowSel);
     var imgs = document.querySelectorAll(imgSel);
     if (!rows.length || !imgs.length) return;
-    function pick(i) { imgs.forEach(function (im, k) { im.classList.toggle(cls, k === i); }); }
+    function pick(i) {
+      var j = Math.min(i, imgs.length - 1);
+      imgs.forEach(function (im, k) { im.classList.toggle(cls, k === j); });
+    }
     rows.forEach(function (r, i) {
       var t = r.querySelector('button') || r;
       r.addEventListener('mouseenter', function () { pick(i); });

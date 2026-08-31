@@ -406,7 +406,7 @@ html.js .rev.in { opacity: 1; transform: none; transition: opacity .8s var(--eas
   .exp_grid { grid-template-columns: 1fr; }
   .exp_imgs { position: static; aspect-ratio: auto; display: grid; gap: .5rem;
     grid-template-columns: 1fr 1fr; }
-  .exp_img { position: static; opacity: .58; aspect-ratio: 1/1; height: auto;
+  .exp_img { position: static; opacity: .76; aspect-ratio: 1/1; height: auto;
     transition: opacity .4s var(--ease); }
   .exp_img:first-child { grid-column: 1 / -1; aspect-ratio: 16/10; }
   .exp_img.is-visible { opacity: 1; }
