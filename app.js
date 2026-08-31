@@ -133,6 +133,28 @@
   });
   window.addEventListener('scroll', function () { closeSpots(null); }, { passive: true });
 
+  /* A hotspot near the right edge must open its card leftward or the card runs off
+     screen. WHICH dot that is changes with the breakpoint, because the mobile hero is
+     a portrait crop and the dots are re-aimed for it — so it is measured from the
+     resolved --x rather than hard-coded. Width-only guard: on iOS a height-only
+     resize is just the URL bar. */
+  (function spotEdges() {
+    var spots = document.querySelectorAll('.spot');
+    if (!spots.length) return;
+    var lastW = 0;
+    function mark() {
+      if (window.innerWidth === lastW) return;
+      lastW = window.innerWidth;
+      spots.forEach(function (sp) {
+        var x = parseFloat(getComputedStyle(sp).getPropertyValue('--x'));
+        if (x >= 70) sp.setAttribute('data-edge', '');
+        else sp.removeAttribute('data-edge');
+      });
+    }
+    mark();
+    window.addEventListener('resize', mark);
+  })();
+
   /* ---------- crossfade trio ---------- */
   function wireCrossfade(rowSel, imgSel, cls, defaultOnLeave) {
     var rows = document.querySelectorAll(rowSel);
