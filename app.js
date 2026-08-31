@@ -161,6 +161,12 @@
     new IntersectionObserver(function (es) {
       es.forEach(function (e) { document.body.classList.toggle('at-hero', e.isIntersecting); });
     }, { rootMargin: '-45% 0px 0px 0px' }).observe(hero);
+    /* ...and once the visitor IS at the booking form the bar has done its job: leaving
+       it up covers the date readout it just filled in (measured on device). */
+    var boka = document.getElementById('boka');
+    if (boka) new IntersectionObserver(function (es) {
+      es.forEach(function (e) { document.body.classList.toggle('at-book', e.isIntersecting); });
+    }, { rootMargin: '0px 0px -25% 0px' }).observe(boka);
   })();
 
   /* ---------- ground flip ---------- */

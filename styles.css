@@ -365,7 +365,7 @@ html:not(.js) .hero_wm i, .hero_wm.in i { transform: translateY(0); }
 /* The hero carries its own "Book direct". While it is on screen the sticky bar is a
    SECOND identical green CTA 71px below the first — measured on device. `at-hero` is
    already on <body> in the markup; nothing was ever toggling it. */
-body.at-hero .mobilebar { opacity: 0; transform: translateY(140%); pointer-events: none; visibility: hidden; }
+body.at-hero .mobilebar, body.at-book .mobilebar { opacity: 0; transform: translateY(140%); pointer-events: none; visibility: hidden; }
 
 /* ---------- Motion's scroll word reveal (21st.dev 24525) ---------- */
 .sw { opacity: .55; transition: opacity .18s linear; }   /* unlit floor clears 4.5:1 on both grounds */
