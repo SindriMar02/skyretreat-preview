@@ -431,15 +431,19 @@ html.js .rev.in { opacity: 1; transform: none; transition: opacity .8s var(--eas
   .nav_book { display: none; }
   .mobilebar_wrap { display: block; }
   .menu { grid-template-columns: 1fr; }
-  /* the panel's photography was switched off entirely on a phone, which is what left
-     a bare list of links. It returns as a band under them — no hover to drive a
-     crossfade on touch, so it holds one frame and reads as atmosphere, not a dead
-     control. */
-  .menu { grid-template-rows: 1fr auto; }
-  .menu_visual { display: block; position: relative; height: 26svh; min-height: 9rem; }
+  .menu { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+  .menu_visual { display: block; position: absolute; inset: 0; z-index: 0; }
   .menu_visual .menu_img:not(.is-visible) { display: none; }
-  .menu_visual::after { content: ''; position: absolute; inset: 0;
-    background: linear-gradient(180deg, var(--night) 0%, rgba(13,20,32,0) 46%); }
+  .menu_visual .menu_img { width: 100%; height: 100%; object-fit: cover; opacity: .3; }
+  .menu_visual::after { content: ''; position: absolute; inset: 0; background:
+    linear-gradient(180deg, rgba(13,20,32,.92) 0%, rgba(13,20,32,.62) 42%, rgba(13,20,32,.94) 100%); }
+  .menu_links { position: relative; z-index: 1; justify-content: center; gap: clamp(2rem, 7vh, 3.5rem); }
+  .menu_links li, .menu_links li:first-child { border: 0; }
+  .menu_links a { padding: .1em 0; }
+  .menu_links span { font-size: clamp(2.1rem, 9.5vw, 3.2rem); line-height: 1.04; }
+  /* the booking row is the one action here, so it carries the accent */
+  .menu_links li:last-child a { color: var(--aurora); }
+  .menu_foot { position: relative; z-index: 1; }
   .hero_wm { top: 15%; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0; text-align: center; padding-right: var(--pad); }
   .hero_base { padding-bottom: 5rem; }
   /* ── mobile rhythm ──────────────────────────────────────────────────────
