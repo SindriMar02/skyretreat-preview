@@ -150,6 +150,19 @@
   wireCrossfade('#expRows li', '.exp_img', 'is-visible', false);
   wireCrossfade('#farmRows .farm_row', '.farm_img', 'is-active', true);
 
+  /* The sticky mobile CTA must not double the hero's own button: while the hero is on
+     screen they are two identical green bars 71px apart (measured on an iPhone).
+     `at-hero` already ships on <body> so the bar is hidden on first paint with no
+     flash; this drops it once the hero is mostly gone. IntersectionObserver, so there
+     is no per-scroll layout read. */
+  (function () {
+    var hero = document.querySelector('.hero');
+    if (!hero) return;
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) { document.body.classList.toggle('at-hero', e.isIntersecting); });
+    }, { rootMargin: '-45% 0px 0px 0px' }).observe(hero);
+  })();
+
   /* ---------- ground flip ---------- */
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) { if (e.isIntersecting) setGround(e.target.dataset.ground || 'night'); });
