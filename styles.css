@@ -45,7 +45,7 @@ body {
   font: 400 1.0625rem/1.65 var(--sans);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
-  transition: background-color .9s var(--ease), color .9s var(--ease);
+  transition: background-color .9s var(--ease), color .3s var(--ease);
 }
 body[data-ground="day"] { background-color: var(--day); }
 body.no-scroll { overflow: hidden; }
@@ -368,7 +368,7 @@ html:not(.js) .hero_wm i, .hero_wm.in i { transform: translateY(0); }
 body.at-hero .mobilebar, body.at-book .mobilebar { opacity: 0; transform: translateY(140%); pointer-events: none; visibility: hidden; }
 
 /* ---------- Motion's scroll word reveal (21st.dev 24525) ---------- */
-.sw { opacity: .55; transition: opacity .18s linear; }   /* unlit floor clears 4.5:1 on both grounds */
+.sw { opacity: .55; }   /* unlit floor clears 4.5:1 on both grounds; scrubbed, so NO transition */
 html:not(.js) .sw { opacity: 1; }
 
 /* ---------- reveals ---------- */

@@ -255,14 +255,27 @@
   function buildScrubWords() {
     document.querySelectorAll('[data-scrub-words]').forEach(function (el) {
       if (el.dataset.swDone) return;
-      var text = el.textContent.replace(/\s+/g, ' ').trim();
       var frag = document.createDocumentFragment();
-      var words = text.split(' ');
-      words.forEach(function (w, i) {
+      function wordSpan(t) {
         var sp = document.createElement('span');
         sp.className = 'sw';
-        sp.textContent = w + (i < words.length - 1 ? ' ' : '');
-        frag.appendChild(sp);
+        sp.textContent = t;
+        return sp;
+      }
+      [].slice.call(el.childNodes).forEach(function (node) {
+        if (node.nodeType === 3) {
+          var parts = node.textContent.replace(/\s+/g, ' ').split(' ');
+          parts.forEach(function (w, i) {
+            if (!w) return;
+            frag.appendChild(wordSpan(w + (i < parts.length - 1 ? ' ' : '')));
+          });
+        } else {
+          /* an element child (<strong>) stays whole and lights as one unit */
+          var sp = wordSpan('');
+          sp.textContent = '';
+          sp.appendChild(node.cloneNode(true));
+          frag.appendChild(sp);
+        }
       });
       el.textContent = '';
       el.appendChild(frag);
@@ -323,14 +336,15 @@
   buildScrubWords();
   scrubWords.forEach(function (el) {
     var ws = el.querySelectorAll('.sw');
-    var n = ws.length;
+    var n = ws.length, last = new Array(n);
     ScrollTrigger.create({
       trigger: el, start: 'top 85%', end: 'bottom 55%', scrub: .5,
       onUpdate: function (self) {
         var p = self.progress;
         for (var i = 0; i < n; i++) {
           var start = n <= 1 ? 0 : (i / (n - 1)) * 0.8;
-          ws[i].style.opacity = wordOpacity(p, start, Math.min(1, start + 0.2));
+          var v = wordOpacity(p, start, Math.min(1, start + 0.2)).toFixed(3);
+          if (last[i] !== v) { last[i] = v; ws[i].style.opacity = v; }
         }
       }
     });
