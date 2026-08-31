@@ -62,8 +62,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .ulink { display: inline-block; margin-top: 1.6rem; font: 500 .78rem/1 var(--sans); letter-spacing: .11em; text-transform: uppercase; border-bottom: 1px solid currentColor; padding-bottom: .38rem; }
 
 /* ---------- the masked line reveal (21st.dev mechanic, in vanilla) ---------- */
-.rl { display: block; overflow: hidden; }
-.rl > i { display: block; font-style: inherit; transform: translateY(110%); will-change: transform; }
+.rl { display: block; overflow: hidden; padding-bottom: .26em; margin-bottom: -.26em; }
+.rl > i { display: block; font-style: inherit; transform: translateY(130%); will-change: transform; }
 html:not(.js) .rl > i, .rl.in > i { transform: translateY(0); }
 .rl.in > i { transition: transform .8s var(--expo); }
 
@@ -392,11 +392,35 @@ html.js .rev.in { opacity: 1; transform: none; transition: opacity .8s var(--eas
   .menu_visual { display: none; }
   .hero_wm { top: 15%; flex-direction: column; align-items: flex-start; gap: 0; }
   .hero_base { padding-bottom: 5rem; }
+  /* ── mobile rhythm ──────────────────────────────────────────────────────
+     Not every band should be a near-full-bleed frame: four 82svh cabin cards and
+     three more full-width photos in a row read as one long undifferentiated scroll.
+     Two of these sections also CONTAIN several images and were collapsing to one,
+     because they are hover-crossfade stacks with nothing to hover on a phone — so
+     the extra pictures were paid for and never seen. They become docks instead. */
+
+  /* Around you: 5 places as a 2-up dock, first one wide, instead of one dead frame.
+     The rows below stay live — tapping one lifts its picture in the dock — so the
+     control still visibly does something, which it did not when the image it changed
+     sat off-screen above the list. */
   .exp_grid { grid-template-columns: 1fr; }
-  .exp_imgs { aspect-ratio: 16/10; }
+  .exp_imgs { position: static; aspect-ratio: auto; display: grid; gap: .5rem;
+    grid-template-columns: 1fr 1fr; }
+  .exp_img { position: static; opacity: .58; aspect-ratio: 1/1; height: auto;
+    transition: opacity .4s var(--ease); }
+  .exp_img:first-child { grid-column: 1 / -1; aspect-ratio: 16/10; }
+  .exp_img.is-visible { opacity: 1; }
+
+  /* The farm: both frames side by side rather than a crossfade of one. */
+  .farm_imgs { position: static; aspect-ratio: auto; display: grid; gap: .5rem;
+    grid-template-columns: 1fr 1fr; order: -1; }
+  .farm_img { position: static; opacity: 1; aspect-ratio: 4/5; height: auto; }
+
+  /* The cabins: still the product and still the biggest thing on the page, but at
+     58svh the next card peeks, which both breaks the rhythm and says "there are more". */
+  .cabin { height: clamp(20rem, 58svh, 30rem); }
   .voices_grid { grid-template-columns: 1fr; gap: 2rem; }
   .farm { grid-template-columns: 1fr; }
-  .farm_imgs { aspect-ratio: 4/3; order: -1; }
   .bk { grid-template-columns: 1fr; }
   .bk_cal { border-right: 0; border-bottom: 1px solid var(--g-line); }
   .foot_wm { flex-direction: column; align-items: flex-start; gap: 0; }

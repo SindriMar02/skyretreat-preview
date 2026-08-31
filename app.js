@@ -344,12 +344,13 @@
       .to('[data-sr-layer="front"]', { yPercent: 8, ease: 'none' }, 0);
 
     /* the words track apart as you scroll, exactly like the footer wordmark */
-    if (heroWm && !isTouch) {
+    if (heroWm) {
       var hw = heroWm.querySelectorAll('.hero_wm_word');
+      var wmScrub = isTouch ? 0.35 : 0.6;
       gsap.fromTo(hw[0], { xPercent: 3.5 }, { xPercent: -2.5, ease: 'none',
-        scrollTrigger: { trigger: layers, start: 'top top', end: 'bottom top', scrub: .6 } });
+        scrollTrigger: { trigger: layers, start: 'top top', end: 'bottom top', scrub: wmScrub } });
       gsap.fromTo(hw[1], { xPercent: -3.5 }, { xPercent: 2.5, ease: 'none',
-        scrollTrigger: { trigger: layers, start: 'top top', end: 'bottom top', scrub: .6 } });
+        scrollTrigger: { trigger: layers, start: 'top top', end: 'bottom top', scrub: wmScrub } });
     }
   }
   /* it rises out of its mask on load, before anything else moves */
